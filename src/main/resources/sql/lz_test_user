@@ -1,0 +1,39 @@
+CREATE TABLE `lz_test_user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `is_delete` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否删除',
+  `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '生成时间',
+  `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `type` int(11) DEFAULT '0' COMMENT '0',
+  `branch_id` int(11) DEFAULT NULL COMMENT '版本号',
+  `real_name` varchar(256) DEFAULT NULL COMMENT '真实名称',
+  `mobile` varchar(256) DEFAULT NULL COMMENT '手机号码',
+  `username` varchar(256) DEFAULT NULL COMMENT '用户名',
+  `task_id` int(11) DEFAULT NULL COMMENT '任务 id',
+  `staff_id` int(11) DEFAULT '0' COMMENT '员工 id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COMMENT='项目用户';
+
+
+
+
+
+
+INSERT INTO `lz_test_user` (`id`, `is_delete`, `gmt_create`, `gmt_modified`, `type`, `branch_id`, `real_name`, `mobile`, `username`, `task_id`, `staff_id`)
+VALUES
+	(1, 0, '2021-01-19 11:39:49', '2021-01-19 11:39:49', 1, 1, '金x', '184xxxx', '张三', 23, 311),
+	(2, 0, '2021-01-19 11:39:49', '2021-01-19 11:39:49', 2, 1, '李x', '184xxxx', '张三', 23, 323),
+	(3, 0, '2021-01-19 15:41:11', '2021-01-19 15:41:11', 3, 1, 'x甜', '184xxxx', '张三', 23, 310),
+	(4, 0, '2021-01-19 15:41:11', '2021-01-19 15:41:11', 4, 1, 'x海', '184xxxx', '张三', 23, 325),
+	(5, 0, '2021-01-19 15:41:11', '2021-01-19 15:41:11', 5, 1, 'x金', '184xxxx', '张三', 23, 317),
+	(6, 0, '2021-02-02 14:58:57', '2021-02-02 14:58:57', 6, 10, '张三', '184xxxx', '张三', 23, 10),
+	(7, 0, '2021-02-02 15:07:08', '2021-02-02 15:07:08', 7, 1, '张三', '184xxxx', '张三', 23, 10),
+	(8, 0, '2021-02-02 15:24:22', '2021-02-02 15:24:22', 8, 1, '张三aaa', '184xxxx', '张三', 23, 10),
+	(9, 0, '2021-02-02 15:25:07', '2021-03-13 16:47:42', 9, 10, '张三xxxxxxx', '184xxxx', '张三', 23, 10),
+	(10, 0, '2021-03-12 15:14:42', '2021-03-12 15:14:42', 10, 10, '张三', '184xxxx', '张三', 23, 10),
+	(11, 0, '2021-03-12 15:15:01', '2021-03-12 15:15:01', 11, 10, '张三', '184xxxx', '张三', 23, 10),
+	(12, 0, '2021-03-12 15:15:01', '2021-03-12 15:15:01', 12, 10, '张三', '184xxxx', '张三', 23, 10),
+	(13, 0, '2021-03-12 15:15:14', '2021-03-12 15:15:14', 13, 10, '张三', '184xxxx', '张三', 23, 10),
+	(14, 0, '2021-03-12 15:15:14', '2021-03-12 15:15:14', 14, 10, '张三', '184xxxx', '张三', 23, 10),
+	(15, 0, '2021-03-18 16:14:43', '2021-03-18 16:14:43', 0, 10, '张三', '184xxxx', 'zhangsan', 23, 10);
+
+

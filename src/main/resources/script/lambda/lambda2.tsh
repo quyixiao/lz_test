@@ -1,0 +1,4 @@
+a = [x for (x in range(5))]             // list的另外一种使用场景
+print(a)
+print((lambda *args: [x + 1 for (x in args)])(*range(5)))
+

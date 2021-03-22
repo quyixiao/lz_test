@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.crawler.mapper.TestReportMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.admin.crawler.entity.TestReport">
+        <id column="id" property="id"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="space_id" property="spaceId"/>
+        <result column="group_id" property="groupId"/>
+        <result column="menu_id" property="menuId"/>
+        <result column="interface_id" property="interfaceId"/>
+        <result column="exe_result" property="exeResult"/>
+        <result column="unique_flag" property="uniqueFlag"/>
+        <result column="user_id" property="userId"/>
+        <result column="real_name" property="realName"/>
+        <result column="status" property="status"/>
+        <result column="group_interface_id" property="groupInterfaceId"/>
+        <result column="exe_result_flag" property="exeResultFlag"/>
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS id, is_delete AS isDelete, gmt_create AS gmtCreate, gmt_modified AS gmtModified, space_id AS spaceId, group_id AS groupId, menu_id AS menuId, interface_id AS interfaceId, exe_result AS exeResult, unique_flag AS uniqueFlag, user_id AS userId, real_name AS realName, status AS status, group_interface_id AS groupInterfaceId, exe_result_flag AS exeResultFlag
+    </sql>
+
+
+
+
+    <select id="selectTestReportById" resultType="TestReport" >
+        select * from lz_test_report  where id=#{id} and is_delete = 0 limit 1
+    </select>
+
+
+    <insert id="insertTestReport" parameterType="TestReport" useGeneratedKeys="true" keyProperty="id" >
+        insert into lz_test_report(
+        <if test="spaceId != null">space_id, </if>
+        <if test="groupId != null">group_id, </if>
+        <if test="menuId != null">menu_id, </if>
+        <if test="interfaceId != null">interface_id, </if>
+        <if test="exeResult != null">exe_result, </if>
+        <if test="uniqueFlag != null">unique_flag, </if>
+        <if test="userId != null">user_id, </if>
+        <if test="realName != null">real_name, </if>
+        <if test="status != null">status, </if>
+        <if test="groupInterfaceId != null">group_interface_id, </if>
+        <if test="exeResultFlag != null">exe_result_flag, </if>
+        is_delete,
+        gmt_create,
+        gmt_modified
+        )values(
+        <if test="spaceId != null">#{ spaceId}, </if>
+        <if test="groupId != null">#{ groupId}, </if>
+        <if test="menuId != null">#{ menuId}, </if>
+        <if test="interfaceId != null">#{ interfaceId}, </if>
+        <if test="exeResult != null">#{ exeResult}, </if>
+        <if test="uniqueFlag != null">#{ uniqueFlag}, </if>
+        <if test="userId != null">#{ userId}, </if>
+        <if test="realName != null">#{ realName}, </if>
+        <if test="status != null">#{ status}, </if>
+        <if test="groupInterfaceId != null">#{ groupInterfaceId}, </if>
+        <if test="exeResultFlag != null">#{ exeResultFlag}, </if>
+        0,
+        now(),
+        now()
+        )
+    </insert>
+
+
+    <update id="updateTestReportById" parameterType="TestReport" >
+        update
+        lz_test_report
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>
+            <if test="spaceId != null">space_id = #{spaceId},</if>
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="menuId != null">menu_id = #{menuId},</if>
+            <if test="interfaceId != null">interface_id = #{interfaceId},</if>
+            <if test="exeResult != null">exe_result = #{exeResult},</if>
+            <if test="uniqueFlag != null">unique_flag = #{uniqueFlag},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="realName != null">real_name = #{realName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="groupInterfaceId != null">group_interface_id = #{groupInterfaceId},</if>
+            <if test="exeResultFlag != null">exe_result_flag = #{exeResultFlag}</if>
+        </trim>
+        ,gmt_modified = now()
+        where id = #{id}
+    </update>
+
+
+    <update id="updateCoverTestReportById" parameterType="TestReport" >
+        update
+            lz_test_report
+        set
+            is_delete = #{isDelete},
+            gmt_create = #{gmtCreate},
+            space_id = #{spaceId},
+            group_id = #{groupId},
+            menu_id = #{menuId},
+            interface_id = #{interfaceId},
+            exe_result = #{exeResult},
+            unique_flag = #{uniqueFlag},
+            user_id = #{userId},
+            real_name = #{realName},
+            status = #{status},
+            group_interface_id = #{groupInterfaceId},
+            exe_result_flag = #{exeResultFlag}
+        ,gmt_modified = now()
+        where id = #{id}
+    </update>
+
+
+    <update id="deleteTestReportById" parameterType="java.lang.Long">
+        update lz_test_report set is_delete = 1 where id=#{id} limit 1
+    </update>
+
+
+    <select id="selectByUniqueFlag" resultType="com.admin.crawler.entity.TestReport">
+        select * from lz_test_report  where unique_flag=#{uniqueId} and is_delete = 0
+    </select>
+
+    <select id="selectLastByUniqueFlag" resultType="com.admin.crawler.entity.TestReport">
+        select * from lz_test_report  where unique_flag=#{uniqueId} and is_delete = 0 order by id desc limit 1
+    </select>
+
+
+    <select id="selectByUniqueFlagStatus" resultType="com.admin.crawler.entity.TestReport">
+        select * from lz_test_report  where unique_flag=#{uniqueId} and is_delete = 0 and status in
+        <foreach collection="statusList" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>
+

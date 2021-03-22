@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.crawler.mapper.SysMenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.admin.crawler.entity.SysMenu">
+        <id column="id" property="id"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="space_id" property="spaceId"/>
+        <result column="name" property="name"/>
+        <result column="url" property="url"/>
+        <result column="type" property="type"/>
+        <result column="icon" property="icon"/>
+        <result column="sort" property="sort"/>
+        <result column="spec_type" property="specType"/>
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS id, is_delete AS isDelete, gmt_create AS gmtCreate, gmt_modified AS gmtModified, parent_id AS parentId, space_id AS spaceId, name AS name, url AS url, type AS type, icon AS icon, sort AS sort, spec_type AS specType
+    </sql>
+
+
+
+
+    <select id="selectSysMenuById" resultType="SysMenu" >
+        select * from sys_menu  where id=#{id} and is_delete = 0 limit 1
+    </select>
+
+
+    <insert id="insertSysMenu" parameterType="SysMenu" useGeneratedKeys="true" keyProperty="id" >
+        insert into sys_menu(
+        <if test="parentId != null">parent_id, </if>
+        <if test="spaceId != null">space_id, </if>
+        <if test="name != null">name, </if>
+        <if test="url != null">url, </if>
+        <if test="type != null">type, </if>
+        <if test="icon != null">icon, </if>
+        <if test="sort != null">sort, </if>
+        <if test="specType != null">spec_type, </if>
+        is_delete,
+        gmt_create,
+        gmt_modified
+        )values(
+        <if test="parentId != null">#{ parentId}, </if>
+        <if test="spaceId != null">#{ spaceId}, </if>
+        <if test="name != null">#{ name}, </if>
+        <if test="url != null">#{ url}, </if>
+        <if test="type != null">#{ type}, </if>
+        <if test="icon != null">#{ icon}, </if>
+        <if test="sort != null">#{ sort}, </if>
+        <if test="specType != null">#{ specType}, </if>
+        0,
+        now(),
+        now()
+        )
+    </insert>
+
+
+    <update id="updateSysMenuById" parameterType="SysMenu" >
+        update
+        sys_menu
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="spaceId != null">space_id = #{spaceId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="specType != null">spec_type = #{specType}</if>
+        </trim>
+        ,gmt_modified = now()
+        where id = #{id}
+    </update>
+
+
+    <update id="updateCoverSysMenuById" parameterType="SysMenu" >
+        update
+            sys_menu
+        set
+            is_delete = #{isDelete},
+            gmt_create = #{gmtCreate},
+            parent_id = #{parentId},
+            space_id = #{spaceId},
+            name = #{name},
+            url = #{url},
+            type = #{type},
+            icon = #{icon},
+            sort = #{sort},
+            spec_type = #{specType}
+                ,gmt_modified = now()
+        where id = #{id}
+    </update>
+
+
+
+    <update id="deleteSysMenuById" parameterType="java.lang.Long">
+        update sys_menu set is_delete = 1 where id=#{id} limit 1
+    </update>
+
+    <select id="getSysMenusBySpaceIdAndParentId" resultType="com.admin.crawler.entity.SysMenu">
+        SELECT * from sys_menu where is_delete=0 and space_id = #{spaceId} and parent_id = #{parentId}
+    </select>
+
+    <select id="getSysMenusBySpaceId" resultType="com.admin.crawler.entity.SysMenu">
+          SELECT * from sys_menu where is_delete=0 and space_id = #{spaceId} order by sort desc
+    </select>
+
+    <select id="selectSysMenuByNameAndParentIdAndSpaceId" resultType="com.admin.crawler.entity.SysMenu">
+        SELECT * from sys_menu where is_delete=0 and name = #{name}
+        <if test="parentId != null">
+            and parent_id = #{parentId}
+        </if>
+        <if test="spaceId != null">
+            and space_id = #{spaceId}
+        </if>
+         limit 1
+    </select>
+
+</mapper>
+

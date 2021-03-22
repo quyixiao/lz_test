@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.crawler.mapper.TestInterfaceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.admin.crawler.entity.TestInterface">
+        <id column="id" property="id"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="space_id" property="spaceId"/>
+        <result column="menu_id" property="menuId"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="position" property="position"/>
+        <result column="user_id" property="userId"/>
+        <result column="real_name" property="realName"/>
+        <result column="file_name" property="fileName"/>
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS id, is_delete AS isDelete, gmt_create AS gmtCreate, gmt_modified AS gmtModified, space_id AS spaceId, menu_id AS menuId, name AS name, code AS code, position AS position, user_id AS userId, real_name AS realName, file_name AS fileName
+    </sql>
+
+
+    <select id="selectTestInterfaceById" resultType="TestInterface">
+        select * from lz_test_interface  where id=#{id} and is_delete = 0 limit 1
+    </select>
+
+
+    <insert id="insertTestInterface" parameterType="TestInterface" useGeneratedKeys="true" keyProperty="id">
+        insert into lz_test_interface(
+        <if test="spaceId != null">space_id,</if>
+        <if test="menuId != null">menu_id,</if>
+        <if test="name != null">name,</if>
+        <if test="code != null">code,</if>
+        <if test="position != null">position,</if>
+        <if test="userId != null">user_id,</if>
+        <if test="realName != null">real_name,</if>
+        <if test="fileName != null">file_name,</if>
+        is_delete,
+        gmt_create,
+        gmt_modified
+        )values(
+        <if test="spaceId != null">#{ spaceId},</if>
+        <if test="menuId != null">#{ menuId},</if>
+        <if test="name != null">#{ name},</if>
+        <if test="code != null">#{ code},</if>
+        <if test="position != null">#{ position},</if>
+        <if test="userId != null">#{ userId},</if>
+        <if test="realName != null">#{ realName},</if>
+        <if test="fileName != null">#{ fileName},</if>
+        0,
+        now(),
+        now()
+        )
+    </insert>
+
+
+    <update id="updateTestInterfaceById" parameterType="TestInterface">
+        update
+        lz_test_interface
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>
+            <if test="spaceId != null">space_id = #{spaceId},</if>
+            <if test="menuId != null">menu_id = #{menuId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="position != null">position = #{position},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="realName != null">real_name = #{realName},</if>
+            <if test="fileName != null">file_name = #{fileName}</if>
+        </trim>
+        ,gmt_modified = now()
+        where id = #{id}
+    </update>
+
+
+    <update id="updateCoverTestInterfaceById" parameterType="TestInterface">
+        update
+            lz_test_interface
+        set
+            is_delete = #{isDelete},
+            gmt_create = #{gmtCreate},
+            space_id = #{spaceId},
+            menu_id = #{menuId},
+            name = #{name},
+            code = #{code},
+            position = #{position},
+            user_id = #{userId},
+            real_name = #{realName},
+            file_name = #{fileName}
+        ,gmt_modified = now()
+        where id = #{id}
+    </update>
+
+
+    <update id="deleteTestInterfaceById" parameterType="java.lang.Long">
+        update lz_test_interface set is_delete = 1 where id=#{id} limit 1
+    </update>
+
+    <update id="updateTestInterfaceBySpaceIdMenuId">
+        update lz_test_interface set position  = position  + 1 where space_id = #{spaceId} and menu_id = #{menuId} and position >=#{position}
+    </update>
+
+
+    <select id="selectAll" resultType="com.admin.crawler.entity.TestInterface">
+        select * from lz_test_interface where is_delete = 0 and menu_id = #{menuId}
+        <if test="name != null">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        order by id desc
+    </select>
+
+
+    <select id="selectMaxPosition" resultType="java.lang.Integer">
+         select ifnull(max(position ),0) from lz_test_interface where menu_id = #{menuId}  and is_delete = 0
+    </select>
+
+    <select id="selectBySpaceIdMenuIdFileName" resultType="com.admin.crawler.entity.TestInterface">
+        select * from lz_test_interface where is_delete = 0 and menu_id = #{menuId} and file_name = #{fileName} limit 1
+    </select>
+
+    <select id="selectByIds" resultType="com.admin.crawler.entity.TestInterface">
+        select * from lz_test_interface where is_delete = 0 and id in
+        <foreach collection="ids" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        order by position asc
+    </select>
+
+</mapper>
+

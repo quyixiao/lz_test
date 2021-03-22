@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.crawler.mapper.SysSpaceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.admin.crawler.entity.SysSpace">
+        <id column="id" property="id"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="name" property="name"/>
+        <result column="sort" property="sort"/>
+        <result column="gitlab_url" property="gitlabUrl"/>
+        <result column="git_project_id" property="gitProjectId"/>
+        <result column="git_project_name" property="gitProjectName"/>
+        <result column="online_url" property="onlineUrl"/>
+        <result column="preview_url" property="previewUrl"/>
+        <result column="test_url" property="testUrl"/>
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS id, is_delete AS isDelete, gmt_create AS gmtCreate, gmt_modified AS gmtModified, name AS name, sort AS sort, gitlab_url AS gitlabUrl, git_project_id AS gitProjectId, git_project_name AS gitProjectName, online_url AS onlineUrl, preview_url AS previewUrl, test_url AS testUrl
+    </sql>
+
+
+
+
+    <select id="selectSysSpaceById" resultType="SysSpace" >
+        select * from sys_space  where id=#{id} and is_delete = 0 limit 1
+    </select>
+
+
+    <insert id="insertSysSpace" parameterType="SysSpace" useGeneratedKeys="true" keyProperty="id" >
+        insert into sys_space(
+        <if test="name != null">name, </if>
+        <if test="sort != null">sort, </if>
+        <if test="gitlabUrl != null">gitlab_url, </if>
+        <if test="gitProjectId != null">git_project_id, </if>
+        <if test="gitProjectName != null">git_project_name, </if>
+        <if test="onlineUrl != null">online_url, </if>
+        <if test="previewUrl != null">preview_url, </if>
+        <if test="testUrl != null">test_url, </if>
+        is_delete,
+        gmt_create,
+        gmt_modified
+        )values(
+        <if test="name != null">#{ name}, </if>
+        <if test="sort != null">#{ sort}, </if>
+        <if test="gitlabUrl != null">#{ gitlabUrl}, </if>
+        <if test="gitProjectId != null">#{ gitProjectId}, </if>
+        <if test="gitProjectName != null">#{ gitProjectName}, </if>
+        <if test="onlineUrl != null">#{ onlineUrl}, </if>
+        <if test="previewUrl != null">#{ previewUrl}, </if>
+        <if test="testUrl != null">#{ testUrl}, </if>
+        0,
+        now(),
+        now()
+        )
+    </insert>
+
+
+    <update id="updateSysSpaceById" parameterType="SysSpace" >
+        update
+        sys_space
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="gitlabUrl != null">gitlab_url = #{gitlabUrl},</if>
+            <if test="gitProjectId != null">git_project_id = #{gitProjectId},</if>
+            <if test="gitProjectName != null">git_project_name = #{gitProjectName},</if>
+            <if test="onlineUrl != null">online_url = #{onlineUrl},</if>
+            <if test="previewUrl != null">preview_url = #{previewUrl},</if>
+            <if test="testUrl != null">test_url = #{testUrl}</if>
+        </trim>
+        ,gmt_modified = now()
+        where id = #{id}
+    </update>
+
+
+    <update id="updateCoverSysSpaceById" parameterType="SysSpace" >
+        update
+            sys_space
+        set
+            is_delete = #{isDelete},
+            gmt_create = #{gmtCreate},
+            name = #{name},
+            sort = #{sort},
+            gitlab_url = #{gitlabUrl},
+            git_project_id = #{gitProjectId},
+            git_project_name = #{gitProjectName},
+            online_url = #{onlineUrl},
+            preview_url = #{previewUrl},
+            test_url = #{testUrl}
+                ,gmt_modified = now()
+        where id = #{id}
+    </update>
+
+
+    <update id="deleteSysSpaceById" parameterType="java.lang.Long">
+        update sys_space set is_delete = 1 where id=#{id} limit 1
+    </update>
+
+
+
+    <select id="selectAll" resultType="com.admin.crawler.entity.SysSpace">
+         select * from sys_space  where  is_delete = 0
+    </select>
+
+
+</mapper>
+

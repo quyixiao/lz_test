@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.crawler.mapper.TestGroupMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.admin.crawler.entity.TestGroup">
+        <id column="id" property="id"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="space_id" property="spaceId"/>
+        <result column="menu_id" property="menuId"/>
+        <result column="name" property="name"/>
+        <result column="position" property="position"/>
+        <result column="user_id" property="userId"/>
+        <result column="is_disable" property="isDisable"/>
+        <result column="real_name" property="realName"/>
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS id, is_delete AS isDelete, gmt_create AS gmtCreate, gmt_modified AS gmtModified, space_id AS spaceId, menu_id AS menuId, name AS name, position AS position, user_id AS userId, is_disable AS isDisable, real_name AS realName
+    </sql>
+
+
+
+
+    <select id="selectTestGroupById" resultType="TestGroup" >
+        select * from lz_test_group  where id=#{id} and is_delete = 0 limit 1
+    </select>
+
+
+    <insert id="insertTestGroup" parameterType="TestGroup" useGeneratedKeys="true" keyProperty="id" >
+        insert into lz_test_group(
+        <if test="spaceId != null">space_id, </if>
+        <if test="menuId != null">menu_id, </if>
+        <if test="name != null">name, </if>
+        <if test="position != null">position, </if>
+        <if test="userId != null">user_id, </if>
+        <if test="isDisable != null">is_disable, </if>
+        <if test="realName != null">real_name, </if>
+        is_delete,
+        gmt_create,
+        gmt_modified
+        )values(
+        <if test="spaceId != null">#{ spaceId}, </if>
+        <if test="menuId != null">#{ menuId}, </if>
+        <if test="name != null">#{ name}, </if>
+        <if test="position != null">#{ position}, </if>
+        <if test="userId != null">#{ userId}, </if>
+        <if test="isDisable != null">#{ isDisable}, </if>
+        <if test="realName != null">#{ realName}, </if>
+        0,
+        now(),
+        now()
+        )
+    </insert>
+
+
+    <update id="updateTestGroupById" parameterType="TestGroup" >
+        update
+        lz_test_group
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>
+            <if test="spaceId != null">space_id = #{spaceId},</if>
+            <if test="menuId != null">menu_id = #{menuId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="position != null">position = #{position},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="isDisable != null">is_disable = #{isDisable},</if>
+            <if test="realName != null">real_name = #{realName}</if>
+        </trim>
+        ,gmt_modified = now()
+        where id = #{id}
+    </update>
+
+
+    <update id="updateCoverTestGroupById" parameterType="TestGroup" >
+        update
+            lz_test_group
+        set
+            is_delete = #{isDelete},
+            gmt_create = #{gmtCreate},
+            space_id = #{spaceId},
+            menu_id = #{menuId},
+            name = #{name},
+            position = #{position},
+            user_id = #{userId},
+            is_disable = #{isDisable},
+            real_name = #{realName}
+        ,gmt_modified = now()
+        where id = #{id}
+    </update>
+
+
+    <update id="deleteTestGroupById" parameterType="java.lang.Long">
+        update lz_test_group set is_delete = 1 where id=#{id} limit 1
+    </update>
+
+
+
+    <select id="selectAll" resultType="com.admin.crawler.entity.TestGroup">
+        select * from lz_test_group  where    is_delete = 0 and space_id = #{spaceId} and menu_id = #{menuId} order by position asc
+    </select>
+
+
+    <select id="selectMaxPositionId" resultType="java.lang.Integer">
+        select ifnull(max(position ),0) from lz_test_group  where  is_delete = 0 and space_id = #{spaceId} and menu_id = #{menuId}
+    </select>
+
+
+    <update id="updateTestGroupSpaceIdMenuId">
+        update lz_test_group set position = position + 1 where  is_delete = 0 and space_id = #{spaceId} and menu_id = #{menuId} and position >= #{position}
+    </update>
+
+
+    <select id="selectByIds" resultType="com.admin.crawler.entity.TestGroup">
+        select * from lz_test_group  where    is_delete = 0 and id in
+        <foreach collection="ids" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        order by position asc
+    </select>
+
+    <select id="selectbyMenuId" resultType="com.admin.crawler.entity.TestGroup">
+         select * from lz_test_group  where  is_delete = 0 and menu_id = #{menuId} order by position asc
+    </select>
+</mapper>
+

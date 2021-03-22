@@ -1,0 +1,16 @@
+map = {'username':'zhangsan','age':18}
+
+for(k,v in map){
+    print(v)
+}
+
+
+a  = 1
+
+b = '我要测试'
+
+export a ,b
+
+
+
+

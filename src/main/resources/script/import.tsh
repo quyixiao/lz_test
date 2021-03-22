@@ -1,0 +1,6 @@
+import a
+import b            //引入变量
+import base.tsh     // 引入文件中的所有方法
+
+
+

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.crawler.mapper.TestGroupInterfaceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.admin.crawler.entity.TestGroupInterface">
+        <id column="id" property="id"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="name" property="name"/>
+        <result column="group_id" property="groupId"/>
+        <result column="menu_id" property="menuId"/>
+        <result column="space_id" property="spaceId"/>
+        <result column="interface_id" property="interfaceId"/>
+        <result column="position" property="position"/>
+        <result column="is_disable" property="isDisable"/>
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS id, is_delete AS isDelete, gmt_create AS gmtCreate, gmt_modified AS gmtModified, name AS name, group_id AS groupId, menu_id AS menuId, space_id AS spaceId, interface_id AS interfaceId, position AS position, is_disable AS isDisable
+    </sql>
+
+
+
+
+    <select id="selectTestGroupInterfaceById" resultType="TestGroupInterface" >
+        select * from lz_test_group_interface  where id=#{id} and is_delete = 0 limit 1
+    </select>
+
+
+    <insert id="insertTestGroupInterface" parameterType="TestGroupInterface" useGeneratedKeys="true" keyProperty="id" >
+        insert into lz_test_group_interface(
+            <if test="name != null">name, </if>
+            <if test="groupId != null">group_id, </if>
+            <if test="menuId != null">menu_id, </if>
+            <if test="spaceId != null">space_id, </if>
+            <if test="interfaceId != null">interface_id, </if>
+            <if test="position != null">position, </if>
+            <if test="isDisable != null">is_disable, </if>
+            is_delete,
+            gmt_create,
+            gmt_modified
+        )values(
+            <if test="name != null">#{ name}, </if>
+            <if test="groupId != null">#{ groupId}, </if>
+            <if test="menuId != null">#{ menuId}, </if>
+            <if test="spaceId != null">#{ spaceId}, </if>
+            <if test="interfaceId != null">#{ interfaceId}, </if>
+            <if test="position != null">#{ position}, </if>
+            <if test="isDisable != null">#{ isDisable}, </if>
+            0,
+            now(),
+            now()
+        )
+    </insert>
+
+
+    <update id="updateTestGroupInterfaceById" parameterType="TestGroupInterface" >
+        update
+            lz_test_group_interface
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="menuId != null">menu_id = #{menuId},</if>
+            <if test="spaceId != null">space_id = #{spaceId},</if>
+            <if test="interfaceId != null">interface_id = #{interfaceId},</if>
+            <if test="position != null">position = #{position},</if>
+            <if test="isDisable != null">is_disable = #{isDisable}</if>
+        </trim>
+        ,gmt_modified = now()
+        where id = #{id}
+    </update>
+
+
+    <update id="updateCoverTestGroupInterfaceById" parameterType="TestGroupInterface" >
+        update
+            lz_test_group_interface
+        set
+            is_delete = #{isDelete},
+            gmt_create = #{gmtCreate},
+            name = #{name},
+            group_id = #{groupId},
+            menu_id = #{menuId},
+            space_id = #{spaceId},
+            interface_id = #{interfaceId},
+            position = #{position},
+            is_disable = #{isDisable}
+        ,gmt_modified = now()
+        where id = #{id}
+    </update>
+
+
+    <update id="deleteTestGroupInterfaceById" parameterType="java.lang.Long">
+        delete from lz_test_group_interface  where id=#{id} limit 1
+    </update>
+
+    <select id="selectByGroupId" resultType="com.admin.crawler.entity.TestGroupInterface">
+            select * from lz_test_group_interface  where group_id=#{groupId} and is_delete = 0
+    </select>
+
+    <select id="selectByGroupIdInterFaceIds" resultType="com.admin.crawler.entity.TestGroupInterface">
+        select * from lz_test_group_interface  where group_id=#{groupId} and is_delete = 0
+        <if test="interfaceIds != null">
+            and interface_id in
+            <foreach collection="interfaceIds" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+
+    <select id="selectMaxPositionId" resultType="java.lang.Integer">
+         select ifnull(max(position ),0) from lz_test_group_interface  where group_id=#{groupId} and is_delete = 0
+    </select>
+
+
+    <update id="updateTestGroupInterfaceBy">
+        update lz_test_group_interface set position = position  + 1 where group_id = #{groupId} and position >= #{position}
+    </update>
+
+    <select id="selectByGroupIdInterFaceIdsIsDisable" resultType="com.admin.crawler.entity.TestGroupInterface">
+        select * from lz_test_group_interface  where group_id=#{groupId} and is_delete = 0 and is_disable = #{isDisable}
+        <if test="interfaceIds != null">
+            and interface_id in
+            <foreach collection="interfaceIds" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+
+    <select id="selectByGroupIdIsDisable" resultType="com.admin.crawler.entity.TestGroupInterface">
+        select * from lz_test_group_interface  where group_id=#{groupId} and is_delete = 0 and is_disable = #{isDisable} order by position asc
+    </select>
+
+
+    <select id="selectByMenuId" resultType="com.admin.crawler.entity.TestGroupInterface">
+         select * from lz_test_group_interface  where menu_id=#{menuId} and is_delete = 0
+    </select>
+
+    <select id="selectByInterfaceId" resultType="com.admin.crawler.entity.TestGroupInterface">
+        select * from lz_test_group_interface  where interface_id=#{interfaceId} and is_delete = 0
+    </select>
+
+    <select id="selectByGroupIdOrderByPosition" resultType="com.admin.crawler.entity.TestGroupInterface">
+        select * from lz_test_group_interface  where group_id=#{groupId} and is_delete = 0 order by position asc
+    </select>
+
+
+    <select id="selectByIds" resultType="com.admin.crawler.entity.TestGroupInterface">
+        select * from lz_test_group_interface  where  is_delete = 0 and is_disable = 0
+        <if test="ids != null">
+            and id in
+            <foreach collection="ids" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by position asc
+    </select>
+
+</mapper>
+

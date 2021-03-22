@@ -1,0 +1,6 @@
+import a
+
+import base.tsh
+
+a = 3
+

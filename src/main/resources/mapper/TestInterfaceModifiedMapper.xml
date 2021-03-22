@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.crawler.mapper.TestInterfaceModifiedMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.admin.crawler.entity.TestInterfaceModified">
+        <id column="id" property="id"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="user_id" property="userId"/>
+        <result column="real_name" property="realName"/>
+        <result column="code" property="code"/>
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id AS id, is_delete AS isDelete, gmt_create AS gmtCreate, gmt_modified AS gmtModified, user_id AS userId, real_name AS realName, code AS code
+    </sql>
+
+
+
+
+    <select id="selectTestInterfaceModifiedById" resultType="TestInterfaceModified" >
+        select * from lz_test_interface_modified  where id=#{id} and is_delete = 0 limit 1 
+    </select>
+
+
+    <insert id="insertTestInterfaceModified" parameterType="TestInterfaceModified" useGeneratedKeys="true" keyProperty="id" >
+        insert into lz_test_interface_modified(
+            <if test="userId != null">user_id, </if>
+            <if test="realName != null">real_name, </if>
+            <if test="code != null">code, </if>
+            is_delete,
+            gmt_create,
+            gmt_modified
+        )values(
+            <if test="userId != null">#{ userId}, </if>
+            <if test="realName != null">#{ realName}, </if>
+            <if test="code != null">#{ code}, </if>
+            0,
+            now(),
+            now()
+        )
+    </insert>
+
+
+    <update id="updateTestInterfaceModifiedById" parameterType="TestInterfaceModified" >
+        update
+            lz_test_interface_modified
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+            <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="realName != null">real_name = #{realName},</if>
+            <if test="code != null">code = #{code}</if>                
+        </trim>
+        ,gmt_modified = now()
+        where id = #{id}
+    </update>
+
+
+    <update id="updateCoverTestInterfaceModifiedById" parameterType="TestInterfaceModified" >
+        update
+            lz_test_interface_modified    
+        set     
+            is_delete = #{isDelete},
+            gmt_create = #{gmtCreate},
+            user_id = #{userId},
+            real_name = #{realName},
+            code = #{code}                
+        ,gmt_modified = now()
+        where id = #{id}
+    </update>
+
+
+    <update id="deleteTestInterfaceModifiedById" parameterType="java.lang.Long">
+        update lz_test_interface_modified set is_delete = 1 where id=#{id} limit 1  
+    </update>
+
+</mapper>
+
