@@ -4,6 +4,7 @@ import com.admin.crawler.bo.RunDto;
 import com.admin.crawler.dto.test.InterfaceReq;
 import com.admin.crawler.entity.TestInterface;
 import com.admin.crawler.service.TestInterfaceService;
+import com.admin.crawler.service.impl.ImportHelpServiceImpl;
 import com.admin.crawler.service.impl.TestGroupServiceImpl;
 import com.admin.crawler.utils.ExceptionUtils;
 import com.admin.crawler.utils.R;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tsh.service.ImportHelpService;
 import tsh.service.impl.ResouceHelp;
 import tsh.t.TTuple1;
 import tsh.t.TTuple3;
@@ -61,7 +63,10 @@ public class InterfaceController {
     public R run(@RequestBody InterfaceReq req) throws Exception {
         List<RunDto> list = new ArrayList<>();
         try {
-            ResouceHelp resouceHelp = new ResouceHelp();
+            if(req.getMenuId() ==  null){
+                req.setMenuId(77l);
+            }
+            ImportHelpService resouceHelp = new ImportHelpServiceImpl(req.getMenuId());
             Map<String, Object> init = new LinkedHashMap<>();
             List<String> codes = SourceUtils.getFileContents("classpath*:code/**/*.tsh");
             for (String content : codes) {
