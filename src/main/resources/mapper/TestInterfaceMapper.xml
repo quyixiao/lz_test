@@ -16,42 +16,47 @@
         <result column="user_id" property="userId"/>
         <result column="real_name" property="realName"/>
         <result column="file_name" property="fileName"/>
+        <result column="git_file_name" property="gitFileName"/>
     </resultMap>
 
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id AS id, is_delete AS isDelete, gmt_create AS gmtCreate, gmt_modified AS gmtModified, space_id AS spaceId, menu_id AS menuId, name AS name, code AS code, position AS position, user_id AS userId, real_name AS realName, file_name AS fileName
+        id AS id, is_delete AS isDelete, gmt_create AS gmtCreate, gmt_modified AS gmtModified, space_id AS spaceId, menu_id AS menuId, name AS name, code AS code, position AS position, user_id AS userId, real_name AS realName, file_name AS fileName, git_file_name AS gitFileName
     </sql>
 
 
-    <select id="selectTestInterfaceById" resultType="TestInterface">
+
+
+    <select id="selectTestInterfaceById" resultType="TestInterface" >
         select * from lz_test_interface  where id=#{id} and is_delete = 0 limit 1
     </select>
 
 
-    <insert id="insertTestInterface" parameterType="TestInterface" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertTestInterface" parameterType="TestInterface" useGeneratedKeys="true" keyProperty="id" >
         insert into lz_test_interface(
-        <if test="spaceId != null">space_id,</if>
-        <if test="menuId != null">menu_id,</if>
-        <if test="name != null">name,</if>
-        <if test="code != null">code,</if>
-        <if test="position != null">position,</if>
-        <if test="userId != null">user_id,</if>
-        <if test="realName != null">real_name,</if>
-        <if test="fileName != null">file_name,</if>
+        <if test="spaceId != null">space_id, </if>
+        <if test="menuId != null">menu_id, </if>
+        <if test="name != null">name, </if>
+        <if test="code != null">code, </if>
+        <if test="position != null">position, </if>
+        <if test="userId != null">user_id, </if>
+        <if test="realName != null">real_name, </if>
+        <if test="fileName != null">file_name, </if>
+        <if test="gitFileName != null">git_file_name, </if>
         is_delete,
         gmt_create,
         gmt_modified
         )values(
-        <if test="spaceId != null">#{ spaceId},</if>
-        <if test="menuId != null">#{ menuId},</if>
-        <if test="name != null">#{ name},</if>
-        <if test="code != null">#{ code},</if>
-        <if test="position != null">#{ position},</if>
-        <if test="userId != null">#{ userId},</if>
-        <if test="realName != null">#{ realName},</if>
-        <if test="fileName != null">#{ fileName},</if>
+        <if test="spaceId != null">#{ spaceId}, </if>
+        <if test="menuId != null">#{ menuId}, </if>
+        <if test="name != null">#{ name}, </if>
+        <if test="code != null">#{ code}, </if>
+        <if test="position != null">#{ position}, </if>
+        <if test="userId != null">#{ userId}, </if>
+        <if test="realName != null">#{ realName}, </if>
+        <if test="fileName != null">#{ fileName}, </if>
+        <if test="gitFileName != null">#{ gitFileName}, </if>
         0,
         now(),
         now()
@@ -59,7 +64,7 @@
     </insert>
 
 
-    <update id="updateTestInterfaceById" parameterType="TestInterface">
+    <update id="updateTestInterfaceById" parameterType="TestInterface" >
         update
         lz_test_interface
         <trim prefix="set" suffixOverrides=",">
@@ -72,14 +77,15 @@
             <if test="position != null">position = #{position},</if>
             <if test="userId != null">user_id = #{userId},</if>
             <if test="realName != null">real_name = #{realName},</if>
-            <if test="fileName != null">file_name = #{fileName}</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="gitFileName != null">git_file_name = #{gitFileName}</if>
         </trim>
         ,gmt_modified = now()
         where id = #{id}
     </update>
 
 
-    <update id="updateCoverTestInterfaceById" parameterType="TestInterface">
+    <update id="updateCoverTestInterfaceById" parameterType="TestInterface" >
         update
             lz_test_interface
         set
@@ -92,7 +98,8 @@
             position = #{position},
             user_id = #{userId},
             real_name = #{realName},
-            file_name = #{fileName}
+            file_name = #{fileName},
+            git_file_name = #{gitFileName}
         ,gmt_modified = now()
         where id = #{id}
     </update>
@@ -101,6 +108,7 @@
     <update id="deleteTestInterfaceById" parameterType="java.lang.Long">
         update lz_test_interface set is_delete = 1 where id=#{id} limit 1
     </update>
+
 
     <update id="updateTestInterfaceBySpaceIdMenuId">
         update lz_test_interface set position  = position  + 1 where space_id = #{spaceId} and menu_id = #{menuId} and position >=#{position}

@@ -7,12 +7,13 @@ import lombok.Data;
 import java.util.Date;
 
 /**
-* <p>
-* 菜单权限表
-* </p>*接口
-* @author ququququ
-* @since 2021-03-09
-*/
+ * <p>
+ * 菜单权限表
+ * </p>*接口
+ *
+ * @author quyixiao
+ * @since 2021-03-22
+ */
 
 @Data
 @TableName("lz_test_interface")
@@ -42,15 +43,21 @@ public class TestInterface implements java.io.Serializable {
     private String realName;
     //文件名称，用户其他接口 import
     private String fileName;
+    //git 文件名
+    private String gitFileName;
+
     /**
-     * 主键id 
+     * 主键id
+     *
      * @return
      */
     public Long getId() {
         return id;
     }
+
     /**
-     * 主键id 
+     * 主键id
+     *
      * @param id
      */
     public void setId(Long id) {
@@ -58,14 +65,17 @@ public class TestInterface implements java.io.Serializable {
     }
 
     /**
-     * 是否删除 
+     * 是否删除
+     *
      * @return
      */
     public Integer getIsDelete() {
         return isDelete;
     }
+
     /**
-     * 是否删除 
+     * 是否删除
+     *
      * @param isDelete
      */
     public void setIsDelete(Integer isDelete) {
@@ -73,14 +83,17 @@ public class TestInterface implements java.io.Serializable {
     }
 
     /**
-     * 生成时间 
+     * 生成时间
+     *
      * @return
      */
     public Date getGmtCreate() {
         return gmtCreate;
     }
+
     /**
-     * 生成时间 
+     * 生成时间
+     *
      * @param gmtCreate
      */
     public void setGmtCreate(Date gmtCreate) {
@@ -88,14 +101,17 @@ public class TestInterface implements java.io.Serializable {
     }
 
     /**
-     * 修改时间 
+     * 修改时间
+     *
      * @return
      */
     public Date getGmtModified() {
         return gmtModified;
     }
+
     /**
-     * 修改时间 
+     * 修改时间
+     *
      * @param gmtModified
      */
     public void setGmtModified(Date gmtModified) {
@@ -103,14 +119,17 @@ public class TestInterface implements java.io.Serializable {
     }
 
     /**
-     * 空间 id 
+     * 空间 id
+     *
      * @return
      */
     public Long getSpaceId() {
         return spaceId;
     }
+
     /**
-     * 空间 id 
+     * 空间 id
+     *
      * @param spaceId
      */
     public void setSpaceId(Long spaceId) {
@@ -118,14 +137,17 @@ public class TestInterface implements java.io.Serializable {
     }
 
     /**
-     * 菜单 id 
+     * 菜单 id
+     *
      * @return
      */
     public Long getMenuId() {
         return menuId;
     }
+
     /**
-     * 菜单 id 
+     * 菜单 id
+     *
      * @param menuId
      */
     public void setMenuId(Long menuId) {
@@ -133,14 +155,17 @@ public class TestInterface implements java.io.Serializable {
     }
 
     /**
-     * 接口名称 
+     * 接口名称
+     *
      * @return
      */
     public String getName() {
         return name;
     }
+
     /**
-     * 接口名称 
+     * 接口名称
+     *
      * @param name
      */
     public void setName(String name) {
@@ -148,14 +173,17 @@ public class TestInterface implements java.io.Serializable {
     }
 
     /**
-     * 代码 
+     * 代码
+     *
      * @return
      */
     public String getCode() {
         return code;
     }
+
     /**
-     * 代码 
+     * 代码
+     *
      * @param code
      */
     public void setCode(String code) {
@@ -163,14 +191,17 @@ public class TestInterface implements java.io.Serializable {
     }
 
     /**
-     * 位置 
+     * 位置
+     *
      * @return
      */
     public Integer getPosition() {
         return position;
     }
+
     /**
-     * 位置 
+     * 位置
+     *
      * @param position
      */
     public void setPosition(Integer position) {
@@ -178,14 +209,17 @@ public class TestInterface implements java.io.Serializable {
     }
 
     /**
-     * 用户 id 
+     * 用户 id
+     *
      * @return
      */
     public Long getUserId() {
         return userId;
     }
+
     /**
-     * 用户 id 
+     * 用户 id
+     *
      * @param userId
      */
     public void setUserId(Long userId) {
@@ -193,14 +227,17 @@ public class TestInterface implements java.io.Serializable {
     }
 
     /**
-     * 用户名称 
+     * 用户名称
+     *
      * @return
      */
     public String getRealName() {
         return realName;
     }
+
     /**
-     * 用户名称 
+     * 用户名称
+     *
      * @param realName
      */
     public void setRealName(String realName) {
@@ -208,18 +245,39 @@ public class TestInterface implements java.io.Serializable {
     }
 
     /**
-     * 文件名称，用户其他接口 import 
+     * 文件名称，用户其他接口 import
+     *
      * @return
      */
     public String getFileName() {
         return fileName;
     }
+
     /**
-     * 文件名称，用户其他接口 import 
+     * 文件名称，用户其他接口 import
+     *
      * @param fileName
      */
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    /**
+     * git 文件名
+     *
+     * @return
+     */
+    public String getGitFileName() {
+        return gitFileName;
+    }
+
+    /**
+     * git 文件名
+     *
+     * @param gitFileName
+     */
+    public void setGitFileName(String gitFileName) {
+        this.gitFileName = gitFileName;
     }
 
     @Override
@@ -237,6 +295,7 @@ public class TestInterface implements java.io.Serializable {
                 ",userId=" + userId +
                 ",realName=" + realName +
                 ",fileName=" + fileName +
+                ",gitFileName=" + gitFileName +
                 "}";
     }
 }

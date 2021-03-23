@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -783,4 +784,19 @@ public class StringUtil {
         }
         return null;
     }
+
+
+    public static String getSimplePath(Date date) {
+        try {
+            if(date == null){
+                date = new Date();
+            }
+            SimpleDateFormat myFmt2=new SimpleDateFormat("yyyy_MM_dd");//等价于now.toLocaleString()
+            return myFmt2.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "temp";
+    }
+
 }
