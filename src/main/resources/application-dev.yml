@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/lz_test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://172.16.157.238:3306/lz_test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: ldd_biz
     password: Hello1234
     initial-size: 10
@@ -30,7 +30,7 @@ spring:
   redis:
     database: 10
     remote: false        #cachecloud 获取
-    host: localhost
+    host: 172.16.157.238
     port: 6379
     password: Hello1234
 
