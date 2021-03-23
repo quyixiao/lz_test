@@ -22,9 +22,9 @@ public class GitConfig {
     @Bean
     public Git getGit() {
         Git git = null;
-        String url = "http://gitlab.ldxinyong.com/crawler/lz_test_script.git";
-        String username = "quyixiao";
-        String password = "quyixiao321";
+        String url = "http://xxxxxxxxxxxxxxx/lz_test_script.git";
+        String username = "xxxxxxxxxx";
+        String password = "xxxxxxxxx";
         String projectName = getProjectName(url);
         String path = System.getProperty("user.home") + "/test_script/" + projectName;
         File file = new File(path);

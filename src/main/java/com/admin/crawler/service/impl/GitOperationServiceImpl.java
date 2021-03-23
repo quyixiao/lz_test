@@ -3,6 +3,7 @@ package com.admin.crawler.service.impl;
 import com.admin.crawler.service.GitOperationService;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.*;
+import org.eclipse.jgit.api.errors.CheckoutConflictException;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
@@ -59,7 +60,17 @@ public class GitOperationServiceImpl implements GitOperationService {
             git.branchCreate().setName(branch).call();
             git.checkout().setName(branch).call();                 //创建新分支，并切换到该分支
         } else {
-            git.checkout().setName(branch).call();
+            Ref ref = null;
+            try {
+                ref = git.checkout().setName(branch).call();
+            } catch (CheckoutConflictException e) {
+                String currBranch = getBranch();
+                log.info("当前分支：" + currBranch);
+                log.error("文件冲突异常,branch, " + branch ,e);
+
+                throw  new Exception();
+            }
+            log.info("----------" + ref.getName());
         }
         return true;
     }
@@ -105,9 +116,9 @@ public class GitOperationServiceImpl implements GitOperationService {
 
 
     @Override
-    public void add(String ... paths) throws Exception {
+    public void add(String... paths) throws Exception {
         String path = ".";
-        if(paths !=null && paths.length > 0){
+        if (paths != null && paths.length > 0) {
             path = paths[0];
         }
         git.add().addFilepattern(path).call();
@@ -185,19 +196,19 @@ public class GitOperationServiceImpl implements GitOperationService {
     public static boolean localBranchExist(Git git, String branch) throws GitAPIException {
         // 获取所有的本地分支和本地分支
         List<Ref> refs = git.branchList().call();
-        return branchExits(refs,branch);
+        return branchExits(refs, branch);
     }
 
     public static boolean remoteBranchExist(Git git, String branch) throws GitAPIException {
         // 获取所有的远程分支和本地分支
         List<Ref> refs = git.branchList().setListMode(ListBranchCommand.ListMode.REMOTE).call();
-        return branchExits(refs,branch);
+        return branchExits(refs, branch);
     }
 
     public static boolean allBranchExist(Git git, String branch) throws GitAPIException {
         // 获取所有的远程分支和本地分支
         List<Ref> refs = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call();
-        return branchExits(refs,branch);
+        return branchExits(refs, branch);
     }
 
 
